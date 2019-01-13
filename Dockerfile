@@ -18,14 +18,15 @@ RUN npm i npm@latest pm2 yarn -g
 
 # install dependencies first, in a different location for easier app bind mounting for local development
 WORKDIR /opt
-COPY dist/package.json ./
-RUN yarn install --no-optional --production && yarn cache clean --force
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install --no-optional && yarn cache clean --force
 ENV PATH /opt/node_modules/.bin:$PATH
 
 # copy in our source code last, as it changes the most
 WORKDIR /opt/app
 COPY ./healthcheck.js ./
-COPY ./dist/ /opt/app
+COPY ./src /opt/app
 
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js
@@ -38,4 +39,4 @@ USER node
 # so that signals are passed properly. Note the code in index.js is needed to catch Docker signals
 # using node here is still more graceful stopping then npm with --init afaik
 # I still can't come up with a good production way to run with npm and graceful shutdown
-CMD [ "pm2-runtime", "start", "./server/bundle.js" ]
+CMD [ "pm2-runtime", "start", "./bin/server.js" ]
