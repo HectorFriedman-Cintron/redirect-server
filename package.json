@@ -1,0 +1,17 @@
+{
+  "name": "redirect-server",
+  "version": "1.0.0",
+  "description": "A simple server to redirect to another url",
+  "main": "bin/server.js",
+  "bin": {
+    "redirect-server": "server.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nconf": "^0.10.0"
+  }
+}
